@@ -40,7 +40,63 @@ require("lazy").setup({
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 	"nvim-lua/plenary.nvim",
 	"ThePrimeagen/vim-be-good",
+	{
+		"amitds1997/remote-nvim.nvim",
+		version = "*", -- Pin to GitHub releases
+		dependencies = {
+			"nvim-lua/plenary.nvim", -- For standard functions
+			"MunifTanjim/nui.nvim", -- To build the plugin UI
+			"nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
+		},
+		config = true,
+		opts = {
+			ssh_config = {
+				ssh_binary = "ssh", -- Binary to use for running SSH command
+				scp_binary = "scp", -- Binary to use for running SSH copy commands
+				ssh_config_file_paths = { "$HOME/.ssh/config" }, -- Which files should be considered to contain the ssh host configurations. NOTE: `Include` is respected in the provided files.
+
+				-- match - The string to match (plain matching is done)
+				-- type - Supports two values "plain"|"secret". Secret means when you provide the value, it should not be stored in the completion history of Neovim.
+				-- value - Default value for the prompt
+				-- value_type - "static"|"dynamic". For things like password, it would be needed for each new connection that the plugin initiates which could be obtrusive.
+				-- So, we save the value (only for current session's interval) to ease the process. If set to "dynamic", we do not save the value even for the session. You have to provide a fresh value each time.
+				ssh_prompts = {
+					{
+						match = "password:",
+						type = "secret",
+						value_type = "static",
+						value = "",
+					},
+					{
+						match = "Password:",
+						type = "secret",
+						value_type = "static",
+						value = "",
+					},
+					{
+						match = "continue connecting (yes/no/[fingerprint])?",
+						type = "plain",
+						value_type = "static",
+						value = "",
+					},
+					{
+						match = "Your OTP:",
+						type = "plain",
+						value_type = "dynamic",
+						value = "",
+					},
+				},
+			},
+		},
+	},
 	"tpope/vim-fugitive",
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+		-- use opts = {} for passing setup options
+		-- this is equalent to setup({}) function
+	},
 	{
 		"ThePrimeagen/harpoon",
 		opts = {},
@@ -119,21 +175,6 @@ require("lazy").setup({
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
 		config = function() -- This is the function that runs, AFTER loading
 			require("which-key").setup()
-
-			-- Document existing key chains
-			require("which-key").register({
-				["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
-				["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
-				["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
-				["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
-				["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
-				["<leader>t"] = { name = "[T]oggle", _ = "which_key_ignore" },
-				["<leader>h"] = { name = "Git [H]unk", _ = "which_key_ignore" },
-			})
-			-- visual mode
-			require("which-key").register({
-				["<leader>h"] = { "Git [H]unk" },
-			}, { mode = "v" })
 		end,
 	},
 
@@ -427,6 +468,10 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
+				-- mojo = {
+				-- 	cmd = { "mojo-lsp-server" },
+				-- 	filetypes = { "mojo", "🔥" },
+				-- },
 				-- clangd = {},
 				-- gopls = {},
 				-- pyright = {},
