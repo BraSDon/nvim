@@ -39,3 +39,18 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 -- Moving across the screen
 vim.keymap.set("n", "<C-b>", "<C-b>zz")
 vim.keymap.set("n", "<C-f>", "<C-f>zz")
+
+-- Indentation
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
+vim.keymap.set("n", "<", "<<")
+vim.keymap.set("n", ">", ">>")
+
+-- Open definition in a split
+vim.keymap.set("n", "<leader>vd", function()
+	vim.cmd("vsplit") -- open vertical split
+	vim.lsp.buf.definition() -- go-to-definition there
+end, { silent = true, desc = "LSP Definition in vsplit" })
+
+-- Go to previous entry in jump list
+vim.keymap.set("n", "<C-o>", "<C-^>", { desc = "Go to previous entry in jump list" })

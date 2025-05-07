@@ -1,2 +1,5 @@
-require("brasdon.remap")
-require("brasdon.set")
+require("brasdon.keymaps")
+require("brasdon.options")
+require("brasdon.autocmds")
+
+print("BraSDon core config loaded")
