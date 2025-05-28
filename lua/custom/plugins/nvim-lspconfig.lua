@@ -141,7 +141,7 @@ return {
 				-- This may be unwanted, since they displace some of your code
 				if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
 					map("<leader>th", function()
-						vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+						vim.lsp.inlay_hint.enable(event.buf, not vim.lsp.inlay_hint.is_enabled(event.buf))
 					end, "[T]oggle Inlay [H]ints")
 				end
 			end,
@@ -170,9 +170,7 @@ return {
 						java = {
 							imports = { -- <- this
 								gradle = {
-									enabled = true,
 									wrapper = {
-										enabled = true,
 										checksums = {
 											{
 												sha256 = "7d3a4ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172",
