@@ -52,5 +52,5 @@ vim.keymap.set("n", "<leader>vd", function()
 	vim.lsp.buf.definition() -- go-to-definition there
 end, { silent = true, desc = "LSP Definition in vsplit" })
 
--- Go to previous entry in jump list
-vim.keymap.set("n", "<C-o>", "<C-^>", { desc = "Go to previous entry in jump list" })
+vim.keymap.set({ "n", "v" }, "<leader>o", "<C-o>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>i", "<C-i>", { noremap = true, silent = true })
