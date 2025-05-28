@@ -4,12 +4,12 @@ return {
 	dependencies = {
 		-- Automatically install LSPs and related tools to stdpath for Neovim
 		{ "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
+		{ "mfussenegger/nvim-jdtls" },
 		{ "williamboman/mason-lspconfig.nvim" },
 		opts = { ensure_installed = { "jdtls" } },
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 		-- Useful status updates for LSP.
-		-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
 		{ "j-hui/fidget.nvim", opts = {} },
 
 		-- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -165,26 +165,6 @@ return {
 		--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 		local servers = {
 			jdtls = {
-				init_options = {
-					settings = {
-						java = {
-							imports = { -- <- this
-								gradle = {
-									enabled = true,
-									wrapper = {
-										enabled = true,
-										checksums = {
-											{
-												sha256 = "7d3a4ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172",
-												allowed = true,
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
 				cmd = { vim.fn.stdpath("data") .. "/mason/packages/jdtls/bin/jdtls" },
 				root_dir = require("lspconfig").util.root_pattern(
 					"build.gradle.kts",
@@ -204,13 +184,6 @@ return {
 						inlayHints = {
 							parameterNames = {
 								enabled = "all",
-							},
-						},
-						project = {
-							referencedLibraries = {
-								vim.fn.expand(
-									"~/.gradle/caches/modules-2/files-2.1/" .. "org.jspecify/jspecify/0.1.0/**/*.jar"
-								),
 							},
 						},
 					},
